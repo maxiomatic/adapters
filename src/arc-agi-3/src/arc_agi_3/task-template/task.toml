@@ -1,0 +1,30 @@
+version = "1.0"
+
+[task]
+name = "arcprize/arc-agi-3__{task_id}"
+authors = [
+    { name = "ARC Prize Foundation" },
+]
+keywords = ["arc-agi", "arc-agi-3", "interactive", "abstract-reasoning", "games"]
+
+[metadata]
+difficulty = "hard"
+category = "reasoning"
+tags = {tags_json}
+game_id = "{game_id}"
+levels = {levels}
+
+[verifier]
+timeout_sec = 120.0
+
+[verifier.env]
+RESULT_TOKEN = "{result_token}"
+
+[agent]
+timeout_sec = 43200.0
+
+[environment]
+build_timeout_sec = 900.0
+cpus = 1
+memory_mb = 2048
+storage_mb = 4096

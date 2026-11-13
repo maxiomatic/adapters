@@ -1,0 +1,26 @@
+# ARC-AGI-3: the game runs in its own container, serving ARC Prize's REST API
+# (arc_agi.Arcade.listen_and_serve, competition mode). The agent in `main` plays
+# over HTTP and cannot read the game source, the human baselines, or the score.
+# This file is merged with Harbor's base compose config.
+services:
+  main:
+    depends_on:
+      game:
+        condition: service_healthy
+
+  game:
+    build:
+      context: ${CONTEXT_DIR}/game
+    image: ${MAIN_IMAGE_NAME}_game
+    expose:
+      - "8001"
+    environment:
+      - ARC_GAME_ID={game_id}
+      - ARC_BUDGET_MULTIPLIER=5
+      - RESULT_TOKEN={result_token}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/api/healthcheck', timeout=3)"]
+      interval: 3s
+      timeout: 5s
+      retries: 40
+      start_period: 10s
